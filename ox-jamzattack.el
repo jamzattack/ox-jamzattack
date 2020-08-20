@@ -58,8 +58,11 @@ Differences from `org-html-format-spec':
       (?A . ,(format "<a href=\"mailto:%s\">%s</a>"
 		     (plist-get info :email)
 		     (org-export-data (plist-get info :author) info)))
-      (?M . ,(ox-jamzattack:last-updated
-	      (plist-get info :input-file)))
+      (?M . ,(let ((file (plist-get info :input-file)))
+	       (or (ox-jamzattack:last-updated file)
+		   (format-time-string timestamp-format
+				       (and file (file-attribute-modification-time
+						  (file-attributes file)))))))
 
       (?c . ,(plist-get info :creator))
       (?C . ,(let ((file (plist-get info :input-file)))
