@@ -55,9 +55,9 @@ Differences from `org-html-format-spec':
 	      (split-string (plist-get info :email)  ",+ *")
 	      ", "))
 
-      (?A . ,(format "<a href=\"mailto:%s\">%s\"</a>"
+      (?A . ,(format "<a href=\"mailto:%s\">%s</a>"
 		     (plist-get info :email)
-		     (plist-get info :author)))
+		     (org-export-data (plist-get info :author) info)))
       (?M . ,(ox-jamzattack:last-updated
 	      (plist-get info :input-file)))
 
