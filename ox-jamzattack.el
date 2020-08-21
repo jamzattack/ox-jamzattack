@@ -31,10 +31,10 @@
   (let* ((default-directory (file-name-directory file))
 	 (filename (file-relative-name file default-directory)))
     (nth 0
-	 (process-lines (or (executable-find "git")
-			    (error "Unable to find program `%s'"))
-			"log" "-1" "--date=short" "--pretty=format:%cd"
-			filename))))
+	 (ignore-errors
+	   (process-lines (executable-find "git")
+			  "log" "-1" "--date=short" "--pretty=format:%cd"
+			  filename)))))
 
 (defun ox-jamzattack:format-spec (info)
   "Return format specification for preamble and postamble.
