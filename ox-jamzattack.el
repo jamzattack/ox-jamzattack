@@ -77,7 +77,15 @@ Differences from `org-html-format-spec':
 
 (advice-add 'org-html-format-spec :override 'ox-jamzattack:format-spec)
 
+
+;;; Sitemap
+
 (defun ox-jamzattack:sitemap (project &optional sitemap-filename)
+  "If the file \".ring.org\" exists, include it in the sitemap.
+
+This is advice for `org-publish-sitemap', and it should not be
+called on its own.  PROJECT and SITEMAP-FILENAME are both used to
+determine where the sitemap is located."
   (let* ((root (expand-file-name
 		(file-name-as-directory
 		 (org-publish-property :base-directory project))))
