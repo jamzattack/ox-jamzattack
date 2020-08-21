@@ -73,5 +73,18 @@ Differences from `org-html-format-spec':
 
 (advice-add 'org-html-format-spec :override 'ox-jamzattack:format-spec)
 
+(defun ox-jamzattack:sitemap (project &optional sitemap-filename)
+  (let* ((root (expand-file-name
+		(file-name-as-directory
+		 (org-publish-property :base-directory project))))
+	 (sitemap-filename (concat root (or sitemap-filename "sitemap.org"))))
+    (with-current-buffer (find-file-noselect sitemap-filename)
+      (when (file-exists-p ".ring.org")
+	(goto-char (point-max))
+	(insert "\n\n#+include: .ring.org")
+	(save-buffer)))))
+
+(advice-add 'org-publish-sitemap :after 'ox-jamzattack:sitemap)
+
 (provide 'ox-jamzattack)
 ;;; ox-jamzattack.el ends here
