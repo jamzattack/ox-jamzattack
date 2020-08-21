@@ -25,6 +25,10 @@
 ;;; Code:
 (require 'ox-publish)
 (require 'ox-html)
+(require 'cl-seq)
+
+
+;;; Format Spec
 
 (defun ox-jamzattack:last-updated (file)
   "Return the time that changes were commited in FILE."
@@ -85,6 +89,38 @@ Differences from `org-html-format-spec':
 	(save-buffer)))))
 
 (advice-add 'org-publish-sitemap :after 'ox-jamzattack:sitemap)
+
+
+;;; RSS
+
+(use-package webfeeder
+  :straight t
+  :defer t)
+
+(defun ox-jamzattack:make-rss (project &rest _ignored)
+  "Create an RSS feed for PROJECT."
+  (let* ((dir (expand-file-name
+	       (file-name-as-directory
+		(org-publish-property :publishing-directory project))))
+	 (files (directory-files dir nil "\\.html\\'"))
+	 (project-name (car project))
+	 (url (format "https://%s.jamzattack.xyz" project-name))
+	 (title (pcase project-name
+		  ("music" "Music")
+		  ("blog" "The Yeet Log"))))
+    (when (cl-member project-name
+		     '("blog"
+		       "music")
+		     :test #'string-equal)
+      (webfeeder-build
+       "rss.xml"
+       dir
+       url
+       files
+       :title title
+       :builder 'webfeeder-make-rss))))
+
+(advice-add 'org-publish :after #'ox-jamzattack:make-rss)
 
 (provide 'ox-jamzattack)
 ;;; ox-jamzattack.el ends here
