@@ -110,7 +110,15 @@ determine where the sitemap is located."
   (let* ((dir (expand-file-name
 	       (file-name-as-directory
 		(org-publish-property :publishing-directory project))))
-	 (files (directory-files dir nil "\\.html\\'"))
+	 (files (cl-remove "\\`\\(index\\|sitemap\\)\\.html\\'"
+			   (mapcar
+			    (lambda (file)
+			      (replace-regexp-in-string
+			       dir "" file))
+			    (directory-files-recursively
+			     dir
+			     "\\.html\\'"))
+			   :test #'string-match-p))
 	 (project-name (car project))
 	 (url (format "https://%s.jamzattack.xyz" project-name))
 	 (title (pcase project-name
