@@ -3,6 +3,7 @@
 ;; Copyright (C) 2020  Jamie Beardslee
 
 ;; Author: Jamie Beardslee <jdb@jamzattack.xyz>
+;; Version: 2021.11.25
 ;; Keywords: 
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -26,6 +27,9 @@
 (require 'ox-publish)
 (require 'ox-html)
 (require 'cl-seq)
+
+(eval-when-compile
+  (require 'use-package))
 
 
 ;;; Format Spec
