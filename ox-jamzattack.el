@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  Jamie Beardslee
 
 ;; Author: Jamie Beardslee <jdb@jamzattack.xyz>
-;; Version: 2021.11.25
+;; Version: 2025.07.16
 ;; Keywords: 
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -106,7 +106,7 @@ determine where the sitemap is located."
 ;;; RSS
 
 (use-package webfeeder
-  :straight t
+  :ensure t
   :defer t)
 
 (defun ox-jamzattack:make-rss (project &rest _ignored)
